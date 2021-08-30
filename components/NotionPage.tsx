@@ -10,7 +10,7 @@ import useDarkMode from 'use-dark-mode'
 import { PageBlock } from 'notion-types'
 
 // core notion renderer
-import { NotionRenderer, Code, Collection, CollectionRow } from 'react-notion-x'
+import { NotionRenderer, Collection, CollectionRow } from 'react-notion-x'
 
 // utils
 import { getBlockTitle } from 'notion-utils'
@@ -27,42 +27,18 @@ import { CustomFont } from './CustomFont'
 import { Loading } from './Loading'
 import { Page404 } from './Page404'
 import { PageHead } from './PageHead'
-import { PageActions } from './PageActions'
 import { Footer } from './Footer'
 import { PageSocial } from './PageSocial'
-import { ReactUtterances } from './ReactUtterances'
 
 import styles from './styles.module.css'
 
-// const Code = dynamic(() =>
-//   import('react-notion-x').then((notion) => notion.Code)
-// )
-//
-// const Collection = dynamic(() =>
-//   import('react-notion-x').then((notion) => notion.Collection)
-// )
-//
-// const CollectionRow = dynamic(
-//   () => import('react-notion-x').then((notion) => notion.CollectionRow),
-//   {
-//     ssr: false
-//   }
-// )
-
-// const Pdf = dynamic(() => import('react-notion-x').then((notion) => notion.Pdf))
-
-// const Equation = dynamic(() =>
-//   import('react-notion-x').then((notion) => notion.Equation)
-// )
-
 // we're now using a much lighter-weight tweet renderer react-static-tweets
 // instead of the official iframe-based embed widget from twitter
-// const Tweet = dynamic(() => import('react-tweet-embed'))
 
-const Modal = dynamic(
-  () => import('react-notion-x').then((notion) => notion.Modal),
-  { ssr: false }
-)
+// const Modal = dynamic(
+//   () => import('react-notion-x').then((notion) => notion.Modal),
+//   { ssr: false }
+// )
 
 export const NotionPage: React.FC<types.PageProps> = ({
   site,
@@ -131,29 +107,7 @@ export const NotionPage: React.FC<types.PageProps> = ({
   const socialDescription =
     getPageDescription(block, recordMap) ?? config.description
 
-  let comments: React.ReactNode = null
-  let pageAside: React.ReactChild = null
-
-  // only display comments and page actions on blog post pages
-  if (isBlogPost) {
-    if (config.utterancesGitHubRepo) {
-      comments = (
-        <ReactUtterances
-          repo={config.utterancesGitHubRepo}
-          issueMap='issue-term'
-          issueTerm='title'
-          theme={darkMode.value ? 'photon-dark' : 'github-light'}
-        />
-      )
-    }
-
-    const tweet = getPageTweet(block, recordMap)
-    if (tweet) {
-      pageAside = <PageActions tweet={tweet} />
-    }
-  } else {
-    pageAside = <PageSocial />
-  }
+  let pageAside: React.ReactChild = <PageSocial />
 
   return (
     <>
@@ -233,12 +187,8 @@ export const NotionPage: React.FC<types.PageProps> = ({
               <a {...props} />
             </Link>
           ),
-          code: Code,
           collection: Collection,
-          collectionRow: CollectionRow,
-          modal: Modal
-          // pdf: Pdf,
-          // equation: Equation
+          collectionRow: CollectionRow
         }}
         recordMap={recordMap}
         rootPageId={site.rootNotionPageId}
@@ -254,7 +204,6 @@ export const NotionPage: React.FC<types.PageProps> = ({
         mapPageUrl={siteMapPageUrl}
         mapImageUrl={mapNotionImageUrl}
         searchNotion={searchNotion}
-        pageFooter={comments}
         pageAside={pageAside}
         footer={
           <Footer
