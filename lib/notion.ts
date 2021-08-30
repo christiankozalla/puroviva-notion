@@ -3,9 +3,7 @@ import { ExtendedRecordMap, SearchParams, SearchResults } from 'notion-types'
 import { getPreviewImages } from './get-preview-images'
 import { mapNotionImageUrl } from './map-image-url'
 
-export const notion = new NotionAPI({
-  apiBaseUrl: process.env.NOTION_API_BASE_URL
-})
+export const notion = new NotionAPI()
 
 export async function getPage(pageId: string): Promise<ExtendedRecordMap> {
   const recordMap = await notion.getPage(pageId)

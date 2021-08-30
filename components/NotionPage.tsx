@@ -17,7 +17,6 @@ import { getBlockTitle } from 'notion-utils'
 import { mapPageUrl, getCanonicalPageUrl } from 'lib/map-page-url'
 import { mapNotionImageUrl } from 'lib/map-image-url'
 import { getPageDescription } from 'lib/get-page-description'
-import { getPageTweet } from 'lib/get-page-tweet'
 import { searchNotion } from 'lib/search-notion'
 import * as types from 'lib/types'
 import * as config from 'lib/config'
@@ -35,10 +34,14 @@ import styles from './styles.module.css'
 // we're now using a much lighter-weight tweet renderer react-static-tweets
 // instead of the official iframe-based embed widget from twitter
 
-// const Modal = dynamic(
-//   () => import('react-notion-x').then((notion) => notion.Modal),
-//   { ssr: false }
-// )
+const Modal = dynamic(
+  () =>
+    import('react-notion-x').then((notion) => {
+      notion.Modal.setAppElement('#__next')
+      return notion.Modal
+    }),
+  { ssr: false }
+)
 
 export const NotionPage: React.FC<types.PageProps> = ({
   site,
@@ -188,7 +191,8 @@ export const NotionPage: React.FC<types.PageProps> = ({
             </Link>
           ),
           collection: Collection,
-          collectionRow: CollectionRow
+          collectionRow: CollectionRow,
+          modal: Modal
         }}
         recordMap={recordMap}
         rootPageId={site.rootNotionPageId}
