@@ -8,7 +8,5 @@ module.exports = withBundleAnalyzer({
   images: {
     domains: ['pbs.twimg.com']
   },
-  future: {
-    webpack5: true
-  }
+  webpack5: true
 })
