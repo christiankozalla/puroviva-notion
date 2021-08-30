@@ -30,7 +30,6 @@ import { PageHead } from './PageHead'
 import { PageActions } from './PageActions'
 import { Footer } from './Footer'
 import { PageSocial } from './PageSocial'
-import { GitHubShareButton } from './GitHubShareButton'
 import { ReactUtterances } from './ReactUtterances'
 
 import styles from './styles.module.css'
@@ -50,11 +49,11 @@ import styles from './styles.module.css'
 //   }
 // )
 
-const Pdf = dynamic(() => import('react-notion-x').then((notion) => notion.Pdf))
+// const Pdf = dynamic(() => import('react-notion-x').then((notion) => notion.Pdf))
 
-const Equation = dynamic(() =>
-  import('react-notion-x').then((notion) => notion.Equation)
-)
+// const Equation = dynamic(() =>
+//   import('react-notion-x').then((notion) => notion.Equation)
+// )
 
 // we're now using a much lighter-weight tweet renderer react-static-tweets
 // instead of the official iframe-based embed widget from twitter
@@ -200,7 +199,7 @@ export const NotionPage: React.FC<types.PageProps> = ({
         <title>{title}</title>
       </Head>
 
-      <CustomFont site={site} />
+      <CustomFont site={{ ...site, fontFamily: config.fontFamily }} />
 
       {isLiteMode && <BodyClassName className='notion-lite' />}
 
@@ -237,9 +236,9 @@ export const NotionPage: React.FC<types.PageProps> = ({
           code: Code,
           collection: Collection,
           collectionRow: CollectionRow,
-          modal: Modal,
-          pdf: Pdf,
-          equation: Equation
+          modal: Modal
+          // pdf: Pdf,
+          // equation: Equation
         }}
         recordMap={recordMap}
         rootPageId={site.rootNotionPageId}
@@ -264,8 +263,6 @@ export const NotionPage: React.FC<types.PageProps> = ({
           />
         }
       />
-
-      <GitHubShareButton />
     </>
   )
 }

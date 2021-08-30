@@ -6,15 +6,18 @@ module.exports = {
   // (this should be a Notion ID; see the docs for how to extract this)
   rootNotionSpaceId: null,
 
-  // basic site info (required)
+  // SEO: basic site info (required)
   name: 'Puroviva',
   domain: 'puroviva.de',
   author: 'Christian Kozalla',
 
-  // open graph metadata (optional)
+  // SEO: open graph metadata (optional)
   description: 'Puroviva - Gesund leben mit gesunden Produkten',
   socialImageTitle: 'Puroviva',
   socialImageSubtitle: 'Gesunde Produkte',
+
+  // Have SEO description on Page-level
+  // Add property "Description" to Blog Post in Notion
 
   // social usernames (optional)
   twitter: null,
@@ -26,6 +29,8 @@ module.exports = {
   defaultPageIcon: null,
   defaultPageCover: null,
   defaultPageCoverPosition: 0.5,
+
+  fontFamily: 'Open Sans',
 
   // image CDN host to proxy all image requests through (optional)
   // NOTE: this requires you to set up an external image proxy
