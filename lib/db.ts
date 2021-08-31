@@ -13,7 +13,6 @@ if (config.isPreviewImageSupportEnabled) {
   images = db.collection(config.firebaseCollectionImages)
 }
 
-
 // import { initializeApp } from "firebase/app";
 // import { getFirestore, Firestore, CollectionReference } from "firebase/firestore";
 // import * as config from './config'
@@ -31,4 +30,3 @@ if (config.isPreviewImageSupportEnabled) {
 
 //   images = db.collection(config.firebaseCollectionImages)
 // }
-

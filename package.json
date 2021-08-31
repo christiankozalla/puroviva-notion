@@ -19,13 +19,16 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
     "test": "run-s test:*",
     "test:lint": "eslint .",
-    "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check",
+    "test:prettier": "prettier **/*.{js,jsx,ts,tsx} --check",
+    "write:prettier": "prettier **/*.{js,jsx,ts,tsx} --write",
     "posttest": "run-s build"
   },
   "dependencies": {
     "@google-cloud/firestore": "^4.10.1",
+    "@palmabit/react-cookie-law": "^0.6.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.21.1",
+    "firebase": "^9.0.1",
     "got": "^11.8.2",
     "isomorphic-unfetch": "^3.1.0",
     "lqip-modern": "^1.2.0",

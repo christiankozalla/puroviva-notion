@@ -110,7 +110,7 @@ export const NotionPage: React.FC<types.PageProps> = ({
   const socialDescription =
     getPageDescription(block, recordMap) ?? config.description
 
-  let pageAside: React.ReactChild = <PageSocial />
+  const pageAside: React.ReactChild = <PageSocial />
 
   return (
     <>
