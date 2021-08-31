@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { domain } from 'lib/config'
 import { resolveNotionPage } from 'lib/resolve-notion-page'
 import { NotionPage } from 'components'
+
+import { logEvent } from 'firebase/analytics'
+import { firebaseAnalytics } from 'lib/firebase'
 
 export const getStaticProps = async () => {
   try {
@@ -18,5 +21,9 @@ export const getStaticProps = async () => {
 }
 
 export default function NotionDomainPage(props) {
+  useEffect(() => {
+    logEvent(firebaseAnalytics, 'home_page_visited')
+  }, [])
+
   return <NotionPage {...props} />
 }
