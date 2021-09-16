@@ -47,13 +47,11 @@ export async function createPreviewImage(
       .match({ id })
 
     if (data.length) {
-      console.log('IMAGE TO INSERT', data)
       return data[0] as PreviewImage
     } else {
       const { body } = await got(url, { responseType: 'buffer' })
       const result = await lqip(body)
 
-      console.log('CREATE METADATA', result.metadata)
       const image = {
         id,
         url,
