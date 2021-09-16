@@ -42,7 +42,7 @@ export async function createPreviewImage(
 
   try {
     const { data, error } = await supabase
-      .from('lqip_images')
+      .from(process.env.NEXT_PUBLIC_SUPABASE_IMAGES)
       .select('dataURIBase64, type')
       .match({ id })
 
@@ -62,7 +62,9 @@ export async function createPreviewImage(
         type: result.metadata.type,
         dataURIBase64: result.metadata.dataURIBase64
       }
-      await supabase.from('lqip_images').insert([image])
+      await supabase
+        .from(process.env.NEXT_PUBLIC_SUPABASE_IMAGES)
+        .insert([image])
 
       return image
     }

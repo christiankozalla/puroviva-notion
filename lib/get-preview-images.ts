@@ -32,7 +32,7 @@ export async function getPreviewImages(
         id,
         url,
         ...(await supabase
-          .from('lqip_images')
+          .from(process.env.NEXT_PUBLIC_SUPABASE_IMAGES)
           .select('id, dataURIBase64, url, type, width, height')
           .match({ id }))
       }
@@ -61,30 +61,4 @@ export async function getPreviewImages(
     }),
     {}
   )
-  // const results = await pMap(imageData, async (model, index) => {
-  //   if (model.exists) {
-  //     return model.data() as types.PreviewImage
-  //   } else {
-  //     const json = {
-  //       url: images[index],
-  //       id: model.id
-  //     }
-
-  //     // TODO: should we fire and forget here to speed up builds?
-  //     return got
-  //       .post(api.createPreviewImage, { json })
-  //       .json() as Promise<types.PreviewImage>
-  //   }
-  // })
-
-  // return results
-  //   .filter(Boolean)
-  //   .filter((image) => !image.error)
-  //   .reduce(
-  //     (acc, result) => ({
-  //       ...acc,
-  //       [result.url]: result
-  //     }),
-  //     {}
-  //   )
 }
