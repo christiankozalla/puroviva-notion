@@ -60,7 +60,7 @@ export const PageSocial: React.FC = () => {
           rel='noopener noreferrer'
         >
           <div className={styles.actionBg}>
-            <div className={styles.actionBgPane} />
+            <div className={styles.actionBgPane}></div>
           </div>
 
           <div className={styles.actionBg}>{action.icon}</div>
