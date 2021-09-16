@@ -68,14 +68,14 @@ export interface PageUrlOverridesInverseMap {
 
 export interface PreviewImage {
   url: string
-  originalWidth: number
-  originalHeight: number
-  width: number
-  height: number
-  type: string
   dataURIBase64: string
+  type: string
+  originalWidth?: number
+  originalHeight?: number
+  width?: number
+  height?: number
 
-  error?: string
+  error?: string | Object
   statusCode?: number
 }
 

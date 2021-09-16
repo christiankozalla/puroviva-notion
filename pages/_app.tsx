@@ -35,8 +35,6 @@ import 'styles/notion.css'
 // import 'prismjs/components/prism-bash'
 
 import { CookieBanner } from '@palmabit/react-cookie-law'
-import { setAnalyticsCollectionEnabled } from 'firebase/analytics'
-import { firebaseAnalytics } from 'lib/firebase'
 import { bannerStyles } from '../styles/banner'
 
 export default function App({ Component, pageProps }) {
@@ -46,7 +44,7 @@ export default function App({ Component, pageProps }) {
       <CookieBanner
         message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
         wholeDomain={true}
-        onAccept={() => setAnalyticsCollectionEnabled(firebaseAnalytics, true)}
+        onAccept={() => {}}
         acceptButtonText='Ja, klar!'
         managePreferencesButtonText='Einstellungen'
         styles={bannerStyles}
