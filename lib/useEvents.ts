@@ -33,7 +33,13 @@ export const useEvents = () => {
 
       return () => {
         console.log('RUN CLEANUP IN INDEX.js')
-        emitEvent({ puid, pageId, eventName: 'page_leave', language, isMobile })
+        emitEvent({
+          puid,
+          pageId,
+          eventName: 'page_leave',
+          language,
+          isMobile
+        })
       }
     }
   }, [cookieConsent])
