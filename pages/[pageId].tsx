@@ -65,7 +65,7 @@ export default function NotionDomainDynamicPage(props: PageProps) {
   return (
     <>
       <NotionPage {...props} />
-      {cookieConsent && (
+      {!cookieConsent && (
         <CookieBanner
           message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
           wholeDomain={true}
