@@ -20,12 +20,12 @@ export default async (
       console.error('ERROR IN HANDLE-EVENTS API ROUTE', error)
     }
 
-    return res.status(201).send({ message: 'Posted event', data: eventData })
+    return res.status(201).send(null)
   } catch (err) {
     console.error(err)
 
     return res
       .status(500)
-      .send({ message: 'Something went fatally wrong', error: err })
+      .json({ message: 'Something went fatally wrong', error: err })
   }
 }

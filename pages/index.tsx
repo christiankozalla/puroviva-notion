@@ -29,6 +29,18 @@ export default function NotionDomainPage(props: PageProps) {
       localStorage.setItem('puid', puid)
     }
     emitEvent({ puid, pageId: props.pageId, eventName: 'page_view' })
+    window.addEventListener(
+      'beforeunload',
+      (e) => emitEvent({ puid, pageId: props.pageId, eventName: 'page_exit' }),
+      { once: true }
+    )
+    return () => {
+      window.removeEventListener('beforeunload', (e) =>
+        emitEvent({ puid, pageId: props.pageId, eventName: 'page_exit' })
+      )
+      console.log('RUN CLEANUP IN INDEX.js')
+      emitEvent({ puid, pageId: props.pageId, eventName: 'page_leave' })
+    }
   }, [])
   return <NotionPage {...props} />
 }

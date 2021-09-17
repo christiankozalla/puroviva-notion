@@ -85,7 +85,7 @@ export interface PreviewImageMap {
 
 export interface EventData {
   puid: string
-  eventName: 'page_view' | 'cta_click' | 'page_leave'
+  eventName: 'page_view' | 'cta_click' | 'page_leave' | 'page_exit'
   pageId: string
   ctaId?: string
 }

@@ -19,14 +19,11 @@ export const emitEvent = async ({
   pageId,
   ctaId = null
 }: EventData): Promise<void> => {
-  const response = await fetch(api.handleEvents, {
+  await fetch(api.handleEvents, {
     method: 'POST',
     body: JSON.stringify({ puid, eventName, pageId, ctaId }),
     headers: {
       'Content-type': 'application/json'
     }
   })
-
-  const data = await response.json()
-  console.log('RESPONSE IN emitEvent', data)
 }
