@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react'
 import { isDev, domain } from 'lib/config'
 import { getSiteMaps } from 'lib/get-site-maps'
 import { resolveNotionPage } from 'lib/resolve-notion-page'
 import { NotionPage } from 'components'
 
-import { emitEvent } from 'lib/analytics'
-import { v4 as uid } from 'uuid'
 import { PageProps } from 'lib/types'
+import { useEvents } from 'lib/useEvents'
+import { useState } from 'react'
+
+import { CookieBanner } from '@palmabit/react-cookie-law'
+import { bannerStyles } from '../styles/banner'
 
 export const getStaticProps = async (context) => {
   const rawPageId = context.params.pageId as string
@@ -58,24 +60,19 @@ export async function getStaticPaths() {
 }
 
 export default function NotionDomainDynamicPage(props: PageProps) {
-  // use the Next.js Router to detect page routing _view _leave _exit
+  const { setCookieConsent } = useEvents()
 
-  useEffect(() => {
-    let puid = localStorage.getItem('puid')
-    if (!puid) {
-      puid = uid()
-      localStorage.setItem('puid', puid)
-    }
-    emitEvent({ puid, pageId: props.pageId, eventName: 'page_view' })
-    window.addEventListener(
-      'beforeunload',
-      (e) => emitEvent({ puid, pageId: props.pageId, eventName: 'page_exit' }),
-      { once: true }
-    )
-    return () => {
-      console.log('RUN CLEANUP IN INDEX.js')
-      emitEvent({ puid, pageId: props.pageId, eventName: 'page_leave' })
-    }
-  }, [])
-  return <NotionPage {...props} />
+  return (
+    <>
+      <NotionPage {...props} />
+      <CookieBanner
+        message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
+        wholeDomain={true}
+        onAccept={() => setTimeout(() => setCookieConsent(true), 1000)}
+        acceptButtonText='Ja, klar!'
+        managePreferencesButtonText='Einstellungen'
+        styles={bannerStyles}
+      />
+    </>
+  )
 }

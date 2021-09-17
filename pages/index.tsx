@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { domain } from 'lib/config'
 import { resolveNotionPage } from 'lib/resolve-notion-page'
 import { NotionPage } from 'components'
 
-import { emitEvent } from 'lib/analytics'
-import { v4 as uid } from 'uuid'
+import { useEvents } from 'lib/useEvents'
 import { PageProps } from 'lib/types'
+
+import { CookieBanner } from '@palmabit/react-cookie-law'
+import { bannerStyles } from '../styles/banner'
 
 export const getStaticProps = async () => {
   try {
@@ -22,22 +24,19 @@ export const getStaticProps = async () => {
 }
 
 export default function NotionDomainPage(props: PageProps) {
-  useEffect(() => {
-    let puid = localStorage.getItem('puid')
-    if (!puid) {
-      puid = uid()
-      localStorage.setItem('puid', puid)
-    }
-    emitEvent({ puid, pageId: props.pageId, eventName: 'page_view' })
-    window.addEventListener(
-      'beforeunload',
-      (e) => emitEvent({ puid, pageId: props.pageId, eventName: 'page_exit' }),
-      { once: true }
-    )
-    return () => {
-      console.log('RUN CLEANUP IN INDEX.js')
-      emitEvent({ puid, pageId: props.pageId, eventName: 'page_leave' })
-    }
-  }, [])
-  return <NotionPage {...props} />
+  const { setCookieConsent } = useEvents()
+
+  return (
+    <>
+      <NotionPage {...props} />
+      <CookieBanner
+        message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
+        wholeDomain={true}
+        onAccept={() => setTimeout(() => setCookieConsent(true), 200)}
+        acceptButtonText='Ja, klar!'
+        managePreferencesButtonText='Einstellungen'
+        styles={bannerStyles}
+      />
+    </>
+  )
 }
