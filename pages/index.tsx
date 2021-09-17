@@ -35,9 +35,6 @@ export default function NotionDomainPage(props: PageProps) {
       { once: true }
     )
     return () => {
-      window.removeEventListener('beforeunload', (e) =>
-        emitEvent({ puid, pageId: props.pageId, eventName: 'page_exit' })
-      )
       console.log('RUN CLEANUP IN INDEX.js')
       emitEvent({ puid, pageId: props.pageId, eventName: 'page_leave' })
     }
