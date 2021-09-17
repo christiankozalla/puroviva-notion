@@ -24,19 +24,21 @@ export const getStaticProps = async () => {
 }
 
 export default function NotionDomainPage(props: PageProps) {
-  const { setCookieConsent } = useEvents()
+  const { cookieConsent, setCookieConsent } = useEvents()
 
   return (
     <>
       <NotionPage {...props} />
-      <CookieBanner
-        message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
-        wholeDomain={true}
-        onAccept={() => setTimeout(() => setCookieConsent(true), 200)}
-        acceptButtonText='Ja, klar!'
-        managePreferencesButtonText='Einstellungen'
-        styles={bannerStyles}
-      />
+      {!cookieConsent && (
+        <CookieBanner
+          message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
+          wholeDomain={true}
+          onAccept={() => setTimeout(() => setCookieConsent(true), 200)}
+          acceptButtonText='Ja, klar!'
+          managePreferencesButtonText='Einstellungen'
+          styles={bannerStyles}
+        />
+      )}
     </>
   )
 }

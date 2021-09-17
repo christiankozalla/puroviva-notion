@@ -60,19 +60,21 @@ export async function getStaticPaths() {
 }
 
 export default function NotionDomainDynamicPage(props: PageProps) {
-  const { setCookieConsent } = useEvents()
+  const { cookieConsent, setCookieConsent } = useEvents()
 
   return (
     <>
       <NotionPage {...props} />
-      <CookieBanner
-        message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
-        wholeDomain={true}
-        onAccept={() => setTimeout(() => setCookieConsent(true), 1000)}
-        acceptButtonText='Ja, klar!'
-        managePreferencesButtonText='Einstellungen'
-        styles={bannerStyles}
-      />
+      {cookieConsent && (
+        <CookieBanner
+          message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
+          wholeDomain={true}
+          onAccept={() => setTimeout(() => setCookieConsent(true), 1000)}
+          acceptButtonText='Ja, klar!'
+          managePreferencesButtonText='Einstellungen'
+          styles={bannerStyles}
+        />
+      )}
     </>
   )
 }
