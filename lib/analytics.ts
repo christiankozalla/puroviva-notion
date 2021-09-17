@@ -13,15 +13,10 @@
 import { api } from './config'
 import { EventData } from './types'
 
-export const emitEvent = async ({
-  puid,
-  eventName,
-  pageId,
-  ctaId = null
-}: EventData): Promise<void> => {
+export const emitEvent = async (eventData: EventData): Promise<void> => {
   await fetch(api.handleEvents, {
     method: 'POST',
-    body: JSON.stringify({ puid, eventName, pageId, ctaId }),
+    body: JSON.stringify(eventData),
     headers: {
       'Content-type': 'application/json'
     }
