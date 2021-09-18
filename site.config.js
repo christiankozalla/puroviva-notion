@@ -8,7 +8,7 @@ module.exports = {
 
   // SEO: basic site info (required)
   name: 'Puroviva',
-  domain: 'puroviva.de',
+  domain: 'puroviva-notion.vercel.app',
   author: 'Christian Kozalla',
 
   // SEO: open graph metadata (optional)
