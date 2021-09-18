@@ -107,7 +107,8 @@ export const apiBaseUrl = `${host}/api`
 
 export const api = {
   createPreviewImage: `${apiBaseUrl}/create-preview-image`,
-  searchNotion: `${apiBaseUrl}/search-notion`
+  searchNotion: `${apiBaseUrl}/search-notion`,
+  handleEvents: `${apiBaseUrl}/handle-events`
 }
 
 // ----------------------------------------------------------------------------
@@ -119,46 +120,6 @@ export const fathomConfig = fathomId
       excludedDomains: ['localhost', 'localhost:3000']
     }
   : undefined
-
-const defaultEnvValueForPreviewImageSupport =
-  isPreviewImageSupportEnabled && isServer ? undefined : null
-
-export const googleProjectId = getEnv(
-  'GCLOUD_PROJECT',
-  defaultEnvValueForPreviewImageSupport
-)
-
-export const googleApplicationCredentials = getGoogleApplicationCredentials()
-
-export const firebaseCollectionImages = getEnv(
-  'FIREBASE_COLLECTION_IMAGES',
-  defaultEnvValueForPreviewImageSupport
-)
-
-// this hack is necessary because vercel doesn't support secret files so we need to encode our google
-// credentials a base64-encoded string of the JSON-ified content
-function getGoogleApplicationCredentials() {
-  if (!isPreviewImageSupportEnabled || !isServer) {
-    return null
-  }
-
-  try {
-    const googleApplicationCredentialsBase64 = getEnv(
-      'GOOGLE_APPLICATION_CREDENTIALS',
-      defaultEnvValueForPreviewImageSupport
-    )
-
-    return JSON.parse(
-      Buffer.from(googleApplicationCredentialsBase64, 'base64').toString()
-    )
-  } catch (err) {
-    console.error(
-      'Firebase config error: invalid "GOOGLE_APPLICATION_CREDENTIALS" should be base64-encoded JSON\n'
-    )
-
-    throw err
-  }
-}
 
 function cleanPageUrlMap(
   pageUrlMap: PageUrlOverridesMap,

@@ -30,6 +30,7 @@ import { Footer } from './Footer'
 import { PageSocial } from './PageSocial'
 
 import styles from './styles.module.css'
+import { emitEvent } from 'lib/analytics'
 
 // we're now using a much lighter-weight tweet renderer react-static-tweets
 // instead of the official iframe-based embed widget from twitter
@@ -110,7 +111,7 @@ export const NotionPage: React.FC<types.PageProps> = ({
   const socialDescription =
     getPageDescription(block, recordMap) ?? config.description
 
-  let pageAside: React.ReactChild = <PageSocial />
+  const pageAside: React.ReactChild = <PageSocial />
 
   return (
     <>
@@ -187,7 +188,18 @@ export const NotionPage: React.FC<types.PageProps> = ({
               shallow={shallow}
               locale={locale}
             >
-              <a {...props} />
+              <a
+                {...props}
+                onClick={() =>
+                  emitEvent({
+                    puid: localStorage.getItem('puid') || 'unkwown',
+                    pageId: window.history.state.as,
+                    eventName: 'cta_click',
+                    ctaId: 'my-cta-id',
+                    destinationPageId: href
+                  })
+                }
+              />
             </Link>
           ),
           collection: Collection,

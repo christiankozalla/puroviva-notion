@@ -4,8 +4,8 @@ import got from 'got'
 import lqip from 'lqip-modern'
 
 import { isPreviewImageSupportEnabled } from '../../lib/config'
-import * as types from '../../lib/types'
-import * as db from '../../lib/db'
+import { PreviewImage } from '../../lib/types'
+import { supabase } from '../../lib/supabase'
 
 export default async (
   req: NextApiRequest,
@@ -37,50 +37,44 @@ export default async (
 export async function createPreviewImage(
   url: string,
   id: string
-): Promise<types.PreviewImage> {
+): Promise<PreviewImage> {
   console.log('createPreviewImage lambda', { url, id })
-  const doc = db.images.doc(id)
 
   try {
-    const model = await doc.get()
-    if (model.exists) {
-      return model.data() as types.PreviewImage
+    const { data } = await supabase
+      .from(process.env.NEXT_PUBLIC_SUPABASE_IMAGES)
+      .select('dataURIBase64, type')
+      .match({ id })
+
+    if (data.length) {
+      return data[0] as PreviewImage
+    } else {
+      const { body } = await got(url, { responseType: 'buffer' })
+      const result = await lqip(body)
+
+      const image = {
+        id,
+        url,
+        originalWidth: result.metadata.originalWidth,
+        originalHeight: result.metadata.originalHeight,
+        width: result.metadata.width,
+        height: result.metadata.height,
+        type: result.metadata.type,
+        dataURIBase64: result.metadata.dataURIBase64
+      }
+      await supabase
+        .from(process.env.NEXT_PUBLIC_SUPABASE_IMAGES)
+        .insert([image])
+
+      return image
     }
-
-    const { body } = await got(url, { responseType: 'buffer' })
-    const result = await lqip(body)
-    console.log('lqip', result.metadata)
-
-    const image = {
-      url,
-      originalWidth: result.metadata.originalWidth,
-      originalHeight: result.metadata.originalHeight,
-      width: result.metadata.width,
-      height: result.metadata.height,
-      type: result.metadata.type,
-      dataURIBase64: result.metadata.dataURIBase64
-    }
-
-    await doc.create(image)
-    return image
   } catch (err) {
     console.error('lqip error', err)
-
-    try {
-      const error: any = {
-        url,
-        error: err.message || 'unknown error'
-      }
-
-      if (err?.response?.statusCode) {
-        error.statusCode = err?.response?.statusCode
-      }
-
-      await doc.create(error)
-      return error
-    } catch (err) {
-      // ignore errors
-      console.error(err)
+    const error: any = {
+      url,
+      error: err.message || 'unknown error'
     }
+
+    return error
   }
 }

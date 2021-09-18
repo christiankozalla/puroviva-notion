@@ -1,3 +1,4 @@
+import React from 'react'
 // global styles shared across the entire site
 import 'styles/global.css'
 
@@ -33,6 +34,22 @@ import 'styles/notion.css'
 // import 'prismjs/components/prism-typescript'
 // import 'prismjs/components/prism-bash'
 
+import { analytics } from 'lib/analytics'
+import { CookieBanner } from '@palmabit/react-cookie-law'
+import { bannerStyles } from '../styles/banner'
+
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <>
+      <Component {...pageProps} />
+      <CookieBanner
+        message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
+        wholeDomain={true}
+        onAccept={() => analytics(true)}
+        acceptButtonText='Ja, klar!'
+        managePreferencesButtonText='Einstellungen'
+        styles={bannerStyles}
+      />
+    </>
+  )
 }

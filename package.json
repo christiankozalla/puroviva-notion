@@ -19,11 +19,13 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
     "test": "run-s test:*",
     "test:lint": "eslint .",
-    "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check",
+    "test:prettier": "prettier **/*.{js,jsx,ts,tsx} --check",
+    "write:prettier": "prettier **/*.{js,jsx,ts,tsx} --write",
     "posttest": "run-s build"
   },
   "dependencies": {
-    "@google-cloud/firestore": "^4.10.1",
+    "@palmabit/react-cookie-law": "^0.6.2",
+    "@supabase/supabase-js": "^1.22.6",
     "classnames": "^2.3.1",
     "date-fns": "^2.21.1",
     "got": "^11.8.2",
@@ -42,7 +44,8 @@
     "react-icons": "^4.2.0",
     "react-notion-x": "^4.6.5",
     "react-use": "^17.2.4",
-    "use-dark-mode": "^2.3.1"
+    "use-dark-mode": "^2.3.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^11.1.0",
@@ -50,6 +53,7 @@
     "@types/node": "^16.7.6",
     "@types/node-fetch": "^2.5.10",
     "@types/react": "^17.0.4",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "babel-eslint": "^10.0.3",

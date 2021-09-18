@@ -68,17 +68,27 @@ export interface PageUrlOverridesInverseMap {
 
 export interface PreviewImage {
   url: string
-  originalWidth: number
-  originalHeight: number
-  width: number
-  height: number
-  type: string
   dataURIBase64: string
+  type: string
+  originalWidth?: number
+  originalHeight?: number
+  width?: number
+  height?: number
 
-  error?: string
+  error?: Record<string, unknown>
   statusCode?: number
 }
 
 export interface PreviewImageMap {
   [url: string]: PreviewImage
+}
+
+export interface EventData {
+  puid: string
+  eventName: 'page_view' | 'cta_click' | 'page_exit'
+  pageId: string
+  ctaId?: string
+  destinationPageId?: string
+  isMobile?: boolean
+  language?: string
 }

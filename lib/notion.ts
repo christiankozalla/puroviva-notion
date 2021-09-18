@@ -45,24 +45,24 @@ export async function getPage(pageId: string): Promise<ExtendedRecordMap> {
   const previewImageMap = await getPreviewImages(urls)
   ;(recordMap as any).preview_images = previewImageMap
 
-  const tweetIds: string[] = blockIds
-    .map((blockId) => {
-      const block = recordMap.block[blockId]?.value
+  // const tweetIds: string[] = blockIds
+  //   .map((blockId) => {
+  //     const block = recordMap.block[blockId]?.value
 
-      if (block) {
-        if (block.type === 'tweet') {
-          const src = block.properties?.source?.[0]?.[0]
+  //     if (block) {
+  //       if (block.type === 'tweet') {
+  //         const src = block.properties?.source?.[0]?.[0]
 
-          if (src) {
-            const id = src.split('?')[0].split('/').pop()
-            if (id) return id
-          }
-        }
-      }
+  //         if (src) {
+  //           const id = src.split('?')[0].split('/').pop()
+  //           if (id) return id
+  //         }
+  //       }
+  //     }
 
-      return null
-    })
-    .filter(Boolean)
+  //     return null
+  //   })
+  //   .filter(Boolean)
   return recordMap
 }
 
