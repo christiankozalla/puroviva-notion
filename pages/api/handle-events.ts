@@ -12,7 +12,7 @@ export default async (
   const eventData: EventData = req.body
 
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('events')
       .insert([eventData], { returning: 'minimal' })
 

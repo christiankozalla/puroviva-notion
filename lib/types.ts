@@ -75,7 +75,7 @@ export interface PreviewImage {
   width?: number
   height?: number
 
-  error?: string | Object
+  error?: Record<string, unknown>
   statusCode?: number
 }
 
@@ -85,7 +85,7 @@ export interface PreviewImageMap {
 
 export interface EventData {
   puid: string
-  eventName: 'page_view' | 'cta_click' | 'page_leave' | 'page_exit'
+  eventName: 'page_view' | 'cta_click' | 'page_exit'
   pageId: string
   ctaId?: string
   destinationPageId?: string

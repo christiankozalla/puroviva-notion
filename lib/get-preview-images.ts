@@ -39,7 +39,7 @@ export async function getPreviewImages(
     })
   )
 
-  const results = await pMap(imageData, async ({ id, url, error, data }) => {
+  const results = await pMap(imageData, async ({ id, url, data }) => {
     if (!data.length) {
       const json = {
         url,

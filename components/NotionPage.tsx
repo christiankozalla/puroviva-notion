@@ -190,7 +190,7 @@ export const NotionPage: React.FC<types.PageProps> = ({
             >
               <a
                 {...props}
-                onClick={(e) =>
+                onClick={() =>
                   emitEvent({
                     puid: localStorage.getItem('puid') || 'unkwown',
                     pageId: window.history.state.as,

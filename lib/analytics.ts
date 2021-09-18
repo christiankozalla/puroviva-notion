@@ -25,9 +25,7 @@ export const emitEvent = async (eventData: EventData): Promise<void> => {
 }
 
 export const analytics = (hasConsent: boolean) => {
-  let isServer = typeof window === 'undefined'
-
-  if (!isServer && hasConsent) {
+  if (typeof window !== 'undefined' && hasConsent) {
     let puid = localStorage.getItem('puid')
     if (!puid) {
       puid = uid()
@@ -35,14 +33,14 @@ export const analytics = (hasConsent: boolean) => {
     }
 
     const pageId = window.history.state.as
-    const isMobile = window.innerWidth <= 450 ? true : false
+    const isMobile = window.innerWidth <= 450
     const language = window.navigator.language
 
     emitEvent({ puid, pageId, eventName: 'page_view', language, isMobile })
 
     window.addEventListener(
       'beforeunload',
-      (e) =>
+      () =>
         emitEvent({
           puid,
           pageId,

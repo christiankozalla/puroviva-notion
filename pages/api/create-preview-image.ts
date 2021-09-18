@@ -41,7 +41,7 @@ export async function createPreviewImage(
   console.log('createPreviewImage lambda', { url, id })
 
   try {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from(process.env.NEXT_PUBLIC_SUPABASE_IMAGES)
       .select('dataURIBase64, type')
       .match({ id })
