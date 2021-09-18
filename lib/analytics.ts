@@ -10,6 +10,7 @@
 // emitEvent runs client side . within useEffect
 // emitEvent posts to /api/events - where the DB call is handled server-side
 
+import { v4 as uid } from 'uuid'
 import { api } from './config'
 import { EventData } from './types'
 
@@ -21,4 +22,35 @@ export const emitEvent = async (eventData: EventData): Promise<void> => {
       'Content-type': 'application/json'
     }
   })
+}
+
+export const analytics = (hasConsent: boolean) => {
+  let isServer = typeof window === 'undefined'
+
+  if (!isServer && hasConsent) {
+    let puid = localStorage.getItem('puid')
+    if (!puid) {
+      puid = uid()
+      localStorage.setItem('puid', puid)
+    }
+
+    const pageId = window.history.state.as
+    const isMobile = window.innerWidth <= 450 ? true : false
+    const language = window.navigator.language
+
+    emitEvent({ puid, pageId, eventName: 'page_view', language, isMobile })
+
+    window.addEventListener(
+      'beforeunload',
+      (e) =>
+        emitEvent({
+          puid,
+          pageId,
+          eventName: 'page_exit',
+          language,
+          isMobile
+        }),
+      { once: true }
+    )
+  }
 }

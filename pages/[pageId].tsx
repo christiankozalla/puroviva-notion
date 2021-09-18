@@ -2,13 +2,7 @@ import { isDev, domain } from 'lib/config'
 import { getSiteMaps } from 'lib/get-site-maps'
 import { resolveNotionPage } from 'lib/resolve-notion-page'
 import { NotionPage } from 'components'
-
 import { PageProps } from 'lib/types'
-import { useEvents } from 'lib/useEvents'
-import { useState } from 'react'
-
-import { CookieBanner } from '@palmabit/react-cookie-law'
-import { bannerStyles } from '../styles/banner'
 
 export const getStaticProps = async (context) => {
   const rawPageId = context.params.pageId as string
@@ -60,21 +54,5 @@ export async function getStaticPaths() {
 }
 
 export default function NotionDomainDynamicPage(props: PageProps) {
-  const { cookieConsent, setCookieConsent } = useEvents()
-
-  return (
-    <>
-      <NotionPage {...props} />
-      {!cookieConsent && (
-        <CookieBanner
-          message='Wir verwenden kleine Kekse - auch genannt "Cookies". Willst du die auch?'
-          wholeDomain={true}
-          onAccept={() => setTimeout(() => setCookieConsent(true), 1000)}
-          acceptButtonText='Ja, klar!'
-          managePreferencesButtonText='Einstellungen'
-          styles={bannerStyles}
-        />
-      )}
-    </>
-  )
+  return <NotionPage {...props} />
 }

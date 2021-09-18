@@ -88,6 +88,7 @@ export interface EventData {
   eventName: 'page_view' | 'cta_click' | 'page_leave' | 'page_exit'
   pageId: string
   ctaId?: string
+  destinationPageId?: string
   isMobile?: boolean
   language?: string
 }
