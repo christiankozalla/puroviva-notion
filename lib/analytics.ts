@@ -27,6 +27,8 @@ export const emitEvent = async (eventData: EventData): Promise<void> => {
 export const analytics = (hasConsent: boolean) => {
   if (typeof window !== 'undefined' && hasConsent) {
     let puid = localStorage.getItem('puid')
+    const exitHandlerAttached = sessionStorage.getItem('on')
+
     if (!puid) {
       puid = uid()
       localStorage.setItem('puid', puid)
@@ -35,20 +37,34 @@ export const analytics = (hasConsent: boolean) => {
     const pageId = window.history.state.as
     const isMobile = window.innerWidth <= 450
     const language = window.navigator.language
+    const referrer = document.referrer || null
 
-    emitEvent({ puid, pageId, eventName: 'page_view', language, isMobile })
+    if (!exitHandlerAttached) {
+      sessionStorage.setItem('on', '1')
+      const timeWhenListenerAttached = new Date().toISOString()
 
-    window.addEventListener(
-      'beforeunload',
-      () =>
-        emitEvent({
-          puid,
-          pageId,
-          eventName: 'page_exit',
-          language,
-          isMobile
-        }),
-      { once: true }
-    )
+      window.addEventListener(
+        'beforeunload',
+        () =>
+          emitEvent({
+            puid,
+            pageId,
+            eventName: 'page_unload',
+            language,
+            isMobile,
+            startTimestamp: timeWhenListenerAttached
+          }),
+        { once: true }
+      )
+    }
+
+    emitEvent({
+      puid,
+      pageId,
+      eventName: 'page_view',
+      language,
+      isMobile,
+      referrer
+    })
   }
 }
