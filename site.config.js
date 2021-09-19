@@ -30,8 +30,6 @@ module.exports = {
   defaultPageCover: null,
   defaultPageCoverPosition: 0.5,
 
-  fontFamily: 'Open Sans',
-
   // image CDN host to proxy all image requests through (optional)
   // NOTE: this requires you to set up an external image proxy
   imageCDNHost: null,

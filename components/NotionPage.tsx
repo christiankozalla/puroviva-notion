@@ -22,7 +22,6 @@ import * as types from 'lib/types'
 import * as config from 'lib/config'
 
 // components
-import { CustomFont } from './CustomFont'
 import { Loading } from './Loading'
 import { Page404 } from './Page404'
 import { PageHead } from './PageHead'
@@ -156,8 +155,6 @@ export const NotionPage: React.FC<types.PageProps> = ({
 
         <title>{title}</title>
       </Head>
-
-      <CustomFont site={{ ...site, fontFamily: config.fontFamily }} />
 
       {isLiteMode && <BodyClassName className='notion-lite' />}
 
