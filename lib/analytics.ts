@@ -56,6 +56,17 @@ export const analytics = (hasConsent: boolean) => {
           }),
         { once: true }
       )
+
+      window.addEventListener('blur', () =>
+        emitEvent({
+          puid,
+          pageId,
+          eventName: 'page_blur',
+          language,
+          isMobile,
+          startTimestamp: timeWhenListenerAttached
+        })
+      )
     }
 
     emitEvent({
