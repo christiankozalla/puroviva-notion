@@ -7,6 +7,17 @@
  * places to add some flare.
  */
 
+/* Custom Styles to override react-notion-x */
+
+.notion-table-of-contents .notion-table-of-contents-item {
+  max-width: 300px;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.6;
+}
+
+/* Custom Styles to override react-notion-x */
+
 .notion {
   --notion-max-width: 720px;
   --notion-header-height: 54px;
