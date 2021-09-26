@@ -15,7 +15,31 @@ interface Content {
 
 export default function Dashboard({ data, error }) {
   if (data) {
-    return <div>Hello from DashBoard {JSON.stringify(data, null, 2)}</div>
+    return (
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <h1 className={styles.headline}>Puroviva Analytics Dashboard</h1>
+          <div className={styles.table}>
+            <div className={styles.row}>
+              <div>URL</div>
+              <div>Entries</div>
+              <div>Visitors</div>
+              <div>Views</div>
+            </div>
+            {Object.entries(data.content).map(
+              ([url, row]: [string, ContentUrl]) => (
+                <div className={styles.row} key={url}>
+                  <div>{url}</div>
+                  <div>{row.entries}</div>
+                  <div>{row.visitors}</div>
+                  <div>{row.views}</div>
+                </div>
+              )
+            )}
+          </div>
+        </main>
+      </div>
+    )
   } else if (error) {
     return <div>{error.message}</div>
   } else {

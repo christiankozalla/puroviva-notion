@@ -1,0 +1,32 @@
+.page {
+  background-color: var(--notion-gray_background);
+}
+
+.main {
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  max-width: 800px;
+  color: var(--fg-color);
+}
+
+.headline {
+  font-size: 3rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.table {
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 4fr 1fr 1fr 1fr;
+  margin: 1rem 0;
+}
+
+.table .row:first-child {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
