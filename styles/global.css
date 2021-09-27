@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Open Sans';
-  src: url('OpenSans-Regular.woff2') format('font/woff2');
+  src: url('OpenSans-Regular.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal oblique;
   font-display: optional;
@@ -8,6 +8,8 @@
 
 * {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 a {
