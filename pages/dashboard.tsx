@@ -13,12 +13,13 @@ interface Content {
   [url: string]: ContentUrl
 }
 
-export default function Dashboard({ data, error }) {
+export default function Dashboard({ data, error, time }) {
   if (data) {
     return (
       <div className={styles.page}>
         <main className={styles.main}>
           <h1 className={styles.headline}>Puroviva Analytics Dashboard</h1>
+          <div className={styles.date}>Current date: {time.split('T')[0]}</div>
           <div className={styles.table}>
             <div className={styles.row}>
               <div>URL</div>
@@ -40,14 +41,24 @@ export default function Dashboard({ data, error }) {
           <div className={styles.table}>
             <div className={styles.row}>
               <div>Language</div>
+              <span></span>
+              <span></span>
               <div>Visitors</div>
             </div>
             {Object.entries(data.languages.count).map(([language, count]) => (
               <div className={styles.row} key={language}>
                 <div>{language}</div>
+                <span></span>
+                <span></span>
                 <div>{count}</div>
               </div>
             ))}
+            <div className={styles.row}>
+              <div>Total visitors</div>
+              <span></span>
+              <span></span>
+              <div>{data.languages.puids.length}</div>
+            </div>
           </div>
         </main>
       </div>
@@ -96,6 +107,7 @@ export async function getServerSideProps() {
     }
   }, {})
 
+  /* Table "Languages" displays the language (browser settings) for each unique visitor */
   const languages = allRows.data.reduce(
     (acc, current) => {
       if (!acc.puids.includes(current.puid)) {
@@ -123,7 +135,8 @@ export async function getServerSideProps() {
         uniqueVisitors: uniqueVisitorIds.size,
         content,
         languages
-      }
+      },
+      time: new Date().toISOString()
     }
   }
 }

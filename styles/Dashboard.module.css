@@ -17,6 +17,11 @@
   margin-bottom: 2rem;
 }
 
+.date {
+  text-align: end;
+  font-style: oblique;
+}
+
 .table {
   margin: 2rem auto;
   border-radius: 8px;
@@ -30,13 +35,12 @@
   padding: 1rem;
 }
 
-.row:first-child {
-  border-radius: 8px 8px 0 0;
-  background-color: var(--select-color-0);
+.row:hover {
+  background-color: var(--notion-blue_background);
 }
 
-.row:not(:first-child):hover {
-  background-color: var(--select-color-2);
+.row:last-child:hover {
+  border-radius: 0 0 8px 8px;
 }
 
 .row + .row {
@@ -50,4 +54,21 @@
 .table .row:first-child {
   font-weight: 700;
   font-size: 1.4rem;
+  border-radius: 8px 8px 0 0;
+  background-color: var(--notion-blue_background);
+}
+
+@media only screen and (max-width: 566px) {
+  .table .row:first-child {
+    font-size: 1rem;
+  }
+
+  .row {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+  }
+
+  .row > *:first-child {
+    overflow-x: hidden;
+  }
 }
