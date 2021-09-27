@@ -37,6 +37,18 @@ export default function Dashboard({ data, error }) {
               )
             )}
           </div>
+          <div className={styles.table}>
+            <div className={styles.row}>
+              <div>Language</div>
+              <div>Visitors</div>
+            </div>
+            {Object.entries(data.languages.count).map(([language, count]) => (
+              <div className={styles.row} key={language}>
+                <div>{language}</div>
+                <div>{count}</div>
+              </div>
+            ))}
+          </div>
         </main>
       </div>
     )
@@ -84,12 +96,33 @@ export async function getServerSideProps() {
     }
   }, {})
 
+  const languages = allRows.data.reduce(
+    (acc, current) => {
+      if (!acc.puids.includes(current.puid)) {
+        Object.assign(acc, {
+          [current.puid]: current.language,
+          count: {
+            ...acc.count,
+            [current.language]: acc.count[current.language] + 1 || 1
+          }
+        })
+        acc.puids.push(current.puid)
+      }
+
+      return acc
+    },
+    { puids: [], count: {} }
+  )
+
+  console.log(languages)
+
   return {
     props: {
       data: {
         totalPageViewsCount: allRows.count,
         uniqueVisitors: uniqueVisitorIds.size,
-        content
+        content,
+        languages
       }
     }
   }
