@@ -1,3 +1,4 @@
+import { PostgrestError } from '@supabase/postgrest-js'
 import { supabase } from 'lib/supabase'
 import styles from '../styles/Dashboard.module.css'
 import { EventData } from 'lib/types'
@@ -13,7 +14,26 @@ interface Content {
   [url: string]: ContentUrl
 }
 
-export default function Dashboard({ data, error, time }) {
+interface Data {
+  totalPageViewsCount: number
+  uniqueVisitors: number
+  uniquePuids: string[]
+  content: Content
+  languages: {
+    [n: string]: number
+  }
+  mobile: number
+}
+
+export default function Dashboard({
+  data,
+  error,
+  time
+}: {
+  data: Data
+  error: PostgrestError
+  time: string
+}) {
   if (data) {
     return (
       <div className={styles.page}>
@@ -45,7 +65,7 @@ export default function Dashboard({ data, error, time }) {
               <span></span>
               <div>Visitors</div>
             </div>
-            {Object.entries(data.languages.count).map(([language, count]) => (
+            {Object.entries(data.languages).map(([language, count]) => (
               <div className={styles.row} key={language}>
                 <div>{language}</div>
                 <span></span>
@@ -57,7 +77,33 @@ export default function Dashboard({ data, error, time }) {
               <div>Total visitors</div>
               <span></span>
               <span></span>
-              <div>{data.languages.puids.length}</div>
+              <div>{data.uniquePuids.length}</div>
+            </div>
+          </div>
+          <div className={styles.table}>
+            <div className={styles.row}>
+              <div>Devices</div>
+              <span></span>
+              <span></span>
+              <div>Visistors</div>
+            </div>
+            <div className={styles.row}>
+              <div>Mobile</div>
+              <span></span>
+              <span></span>
+              <div>{data.mobile}</div>
+            </div>
+            <div className={styles.row}>
+              <div>Desktop</div>
+              <span></span>
+              <span></span>
+              <div>{data.uniquePuids.length - data.mobile}</div>
+            </div>
+            <div className={styles.row}>
+              <div>Total visitors</div>
+              <span></span>
+              <span></span>
+              <div>{data.uniquePuids.length}</div>
             </div>
           </div>
         </main>
@@ -108,25 +154,25 @@ export async function getServerSideProps() {
   }, {})
 
   /* Table "Languages" displays the language (browser settings) for each unique visitor */
-  const languages = allRows.data.reduce(
+  /* Table "Devices" displays the mobile count (true if screen width <= 450px) for each unique visitor */
+  const { uniquePuids, languages, mobile } = allRows.data.reduce(
     (acc, current) => {
-      if (!acc.puids.includes(current.puid)) {
+      if (!acc.uniquePuids.includes(current.puid)) {
         Object.assign(acc, {
-          [current.puid]: current.language,
-          count: {
-            ...acc.count,
-            [current.language]: acc.count[current.language] + 1 || 1
-          }
+          languages: {
+            ...acc.languages,
+            [current.language]: acc.languages[current.language] + 1 || 1
+          },
+          mobile: current.isMobile === true ? acc.mobile + 1 : acc.mobile
         })
-        acc.puids.push(current.puid)
+
+        acc.uniquePuids.push(current.puid)
       }
 
       return acc
     },
-    { puids: [], count: {} }
+    { uniquePuids: [], languages: {}, mobile: 0 }
   )
-
-  console.log(languages)
 
   return {
     props: {
@@ -134,7 +180,9 @@ export async function getServerSideProps() {
         totalPageViewsCount: allRows.count,
         uniqueVisitors: uniqueVisitorIds.size,
         content,
-        languages
+        languages,
+        mobile,
+        uniquePuids
       },
       time: new Date().toISOString()
     }
